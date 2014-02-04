@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`User` (
   `User_Id` INT UNSIGNED NOT NULL,
   `Username` VARCHAR(45) NOT NULL,
   `Password` VARCHAR(45) NOT NULL,
-  `Status` INT UNSIGNED NULL,
   `IP_address` VARCHAR(45) NULL,
   `Registry_date` DATE NULL,
   PRIMARY KEY (`User_Id`),
@@ -31,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`PersonData` (
 -- Table `Grupparbete`.`UserPerson`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`UserPerson` (
-  `User_Id` INT NOT NULL,
+  `User_Id` INT UNSIGNED NOT NULL,
   `Personnr` VARCHAR(13) NOT NULL,
   PRIMARY KEY (`User_Id`),
   INDEX `fk_UserPerson_User1_idx` (`User_Id` ASC),
@@ -53,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`UserPerson` (
 -- Table `Grupparbete`.`Admin`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`Admin` (
-  `Admin_Id` INT NOT NULL,
+  `Admin_Id` INT UNSIGNED NOT NULL,
   `Address` VARCHAR(45) NULL,
   INDEX `fk_Admin_User1_idx` (`Admin_Id` ASC),
   PRIMARY KEY (`Admin_Id`),
@@ -63,18 +62,31 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`Admin` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE);
 
-
-
 -- -----------------------------------------------------
 -- Table `Grupparbete`.`AdminInfo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`AdminInfo` (
   `Mobile_nr` VARCHAR(45) NOT NULL,
-  `Admin_Id` INT NOT NULL,
+  `Admin_Id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`Mobile_nr`),
   UNIQUE INDEX `Mobile_nr_UNIQUE` (`Mobile_nr` ASC),
   CONSTRAINT `fk_AdminInfo_Admin1`
     FOREIGN KEY (`Admin_Id`)
     REFERENCES `Grupparbete`.`Admin` (`Admin_Id`)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE);
+
+-- -----------------------------------------------------
+-- Table `Grupparbete`.`BannedUser`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Grupparbete`.`BannedUser` (
+  `daysBanned` INT UNSIGNED NOT NULL,
+  `User_Id` INT UNSIGNED NOT NULL,
+  INDEX `fk_BannedUser_User1_idx` (`User_Id` ASC),
+  PRIMARY KEY (`User_Id`),
+  UNIQUE INDEX `User_Id_UNIQUE` (`User_Id` ASC),
+  CONSTRAINT `fk_BannedUser_User1`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `Grupparbete`.`User` (`User_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);	
