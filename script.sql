@@ -5,7 +5,7 @@ USE `Grupparbete`;
 -- Table `Grupparbete`.`User`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`User` (
-  `User_Id` INT UNSIGNED NOT NULL,
+  `User_Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(45) NOT NULL,
   `Password` VARCHAR(45) NOT NULL,
   `IP_address` VARCHAR(45) NULL,
@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`User` (
 -- Table `Grupparbete`.`PersonData`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`PersonData` (
-  `Name` VARCHAR(45) NULL,
+  `firstName` VARCHAR(45) NULL,
+  `lastName` VARCHAR(45) NULL,
   `Email` VARCHAR(45) NULL,
   `Personnr` VARCHAR(13) NOT NULL,
   PRIMARY KEY (`Personnr`),
@@ -53,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `Grupparbete`.`UserPerson` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Grupparbete`.`Admin` (
   `Admin_Id` INT UNSIGNED NOT NULL,
-  `Address` VARCHAR(45) NULL,
+  `Address` TEXT NULL,
   INDEX `fk_Admin_User1_idx` (`Admin_Id` ASC),
   PRIMARY KEY (`Admin_Id`),
   CONSTRAINT `fk_Admin_User1`

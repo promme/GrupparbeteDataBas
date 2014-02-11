@@ -13,24 +13,25 @@ public class DatabaseHandler {
 	Statement queryCaller = null;
 	Connection con = null;
 	ResultSet rs = null;
+	MysqlDataSource ds = null;
 
 	DatabaseHandler() {
 		MysqlDataSource ds = new MysqlDataSource();
 		ds.setServerName("localhost");
 		ds.setPort(3306);
-		ds.setDatabaseName("sakila");
+		ds.setDatabaseName("grupparbete");
 
-		try {
-			con = ds.getConnection("swag", "yolo");
-		} catch (SQLException e) {
-			System.out.println("error" + e.getMessage());
-		}
-		System.out.println("de funka");
-		try {
-			queryCaller = con.createStatement();
-		} catch (SQLException e) {
-			System.out.println("error: " + e.getMessage());
-		}
+		//		try {
+		//			con = ds.getConnection("swag", "yolo");
+		//		} catch (SQLException e) {
+		//			System.out.println("error" + e.getMessage());
+		//		}
+		//		System.out.println("de funka");
+		//		try {
+		//			queryCaller = con.createStatement();
+		//		} catch (SQLException e) {
+		//			System.out.println("error: " + e.getMessage());
+		//		}
 
 		// TODO:lägg in när programmet stängs
 		// if (con != null) {
@@ -43,7 +44,33 @@ public class DatabaseHandler {
 
 	}
 
-	void GetFromDatabase(String Query) {
+	Boolean setupConnection(String password, String username){
+		ds = new MysqlDataSource();
+		ds.setServerName("localhost");
+		ds.setPort(3306);
+		ds.setDatabaseName("grupparbete");
+
+
+
+
+		try {
+			con = ds.getConnection(password, username);
+			try {
+				queryCaller = con.createStatement();
+			} catch (SQLException e) {
+				System.out.println("error: " + e.getMessage());
+			}
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Error, cannot connect " + e.getMessage());
+			return false;
+		}
+
+
+
+	}
+
+	ResultSet getFromDatabase(String Query) {
 		int nCols = 0;
 		try {
 			rs = queryCaller.executeQuery(Query);
@@ -71,10 +98,11 @@ public class DatabaseHandler {
 		} catch (SQLException e) {
 			System.out.println("ERROR:" + e.getMessage());
 		}
+		return rs;
 
 	}
 
-	void WriteToDatabase(String Query) {
+	void writeToDatabase(String Query) {
 
 		try {
 			int affectedrows = queryCaller.executeUpdate(Query);
@@ -83,6 +111,24 @@ public class DatabaseHandler {
 		} catch (SQLException e) {
 			System.out.println("error: " + e.getMessage());
 		}
+	}
+
+	void writeToDatabase(String query[]) {
+		try {
+			for(int i=0;i<query.length;i++){
+
+				queryCaller.addBatch(query[i]);
+				System.out.println("Addin batch "+ query[i]);
+			}
+			queryCaller.executeBatch();
+
+		} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		
 	}
 
 }
