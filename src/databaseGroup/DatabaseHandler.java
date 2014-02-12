@@ -2,7 +2,6 @@ package databaseGroup;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -71,30 +70,30 @@ public class DatabaseHandler {
 	}
 
 	ResultSet getFromDatabase(String Query) {
-		int nCols = 0;
+//		int nCols = 0;
 		try {
 			rs = queryCaller.executeQuery(Query);
-			rs.beforeFirst();
-			try {
-				ResultSetMetaData resultinfo = rs.getMetaData();
-				nCols = resultinfo.getColumnCount();
-				for (int i = 1; i < nCols + 1; i++) {
-					System.out.print(resultinfo.getColumnLabel(i) + " ");
-				}
-				System.out.println();
-			} catch (SQLException e1) {
-				System.out.println("ERROR: " + e1.getMessage());
-				e1.printStackTrace();
-			}
-			while (rs.next()) {
-				for (int i = 1; i < nCols + 1; i++) {
-					System.out.print(rs.getString(i) + " ");
-
-				}
-				System.out.println();
-				// System.out.println(rs.getMetaData());
-				// System.out.println(rs.getString("last_name"));
-			}
+//			rs.beforeFirst();
+//			try {
+//				ResultSetMetaData resultinfo = rs.getMetaData();
+//				nCols = resultinfo.getColumnCount();
+//				for (int i = 1; i < nCols + 1; i++) {
+//					System.out.print(resultinfo.getColumnLabel(i) + " ");
+//				}
+//				System.out.println();
+//			} catch (SQLException e1) {
+//				System.out.println("ERROR: " + e1.getMessage());
+//				e1.printStackTrace();
+//			}
+//			while (rs.next()) {
+//				for (int i = 1; i < nCols + 1; i++) {
+//					System.out.print(rs.getString(i) + " ");
+//
+//				}
+//				System.out.println();
+//				// System.out.println(rs.getMetaData());
+//				// System.out.println(rs.getString("last_name"));
+//			}
 		} catch (SQLException e) {
 			System.out.println("ERROR:" + e.getMessage());
 		}
@@ -105,9 +104,10 @@ public class DatabaseHandler {
 	void writeToDatabase(String Query) {
 
 		try {
-			int affectedrows = queryCaller.executeUpdate(Query);
-			System.out.println("Affected rows: " + affectedrows);
-			System.out.println("Query Sent:" + Query);
+//			int affectedrows = queryCaller.executeUpdate(Query);
+			queryCaller.executeUpdate(Query);
+//			System.out.println("Affected rows: " + affectedrows);
+//			System.out.println("Query Sent:" + Query);
 		} catch (SQLException e) {
 			System.out.println("error: " + e.getMessage());
 		}
@@ -118,7 +118,7 @@ public class DatabaseHandler {
 			for(int i=0;i<query.length;i++){
 
 				queryCaller.addBatch(query[i]);
-				System.out.println("Addin batch "+ query[i]);
+//				System.out.println("Adding query "+ query[i]);
 			}
 			queryCaller.executeBatch();
 
@@ -126,9 +126,5 @@ public class DatabaseHandler {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
-		
 	}
-
 }

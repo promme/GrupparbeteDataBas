@@ -31,6 +31,11 @@ public class QueryWriter {
 		//Connect person to a user account
 		return String.format("insert into userperson (User_id,Personnr) values (%d,'%s')",id,personnr);
 	}
+	String getID(String username){
+		return String.format("select user_id from user where username = '%s'",username);	
+				}
+	
+	
 
 	String[] adminify(int id, String address,String username){
 		//Make a user into an Admin
@@ -47,7 +52,7 @@ public class QueryWriter {
 
 	String banUser(int userId,int daysBanned){
 		return String.format("insert into BannedUser(User_id,daysBanned) values(%d,%d)",userId,daysBanned);
-		
+	
 	}
 
 }
